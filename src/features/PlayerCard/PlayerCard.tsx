@@ -15,13 +15,12 @@ const pulse = keyframes`
 `;
 
 const Card = styled.div<{ $isActive: boolean }>`
-  background: white;
+  background: #05041d;
   align-self: stretch;
   margin: 2.5rem;
   padding: 16px;
   border-radius: 8px;
-  border: ${({ $isActive }) =>
-    $isActive ? "3px solid green" : "1px solid #ccc"};
+  border: ${({ $isActive }) => ($isActive ? "3px solid green" : "none")};
   animation: ${({ $isActive }) => ($isActive ? pulse : "none")} 1.5s infinite;
   text-align: center;
   display: grid;

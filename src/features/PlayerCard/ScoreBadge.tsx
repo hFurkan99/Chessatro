@@ -1,11 +1,10 @@
 import styled from "styled-components";
 
 const Badge = styled.div`
-  color: #000000ca;
+  color: #ffffff;
   font-weight: 700;
-  font-size: 5rem;
+  font-size: 6rem;
   display: flex;
-  align-items: center;
   justify-content: center;
 `;
 

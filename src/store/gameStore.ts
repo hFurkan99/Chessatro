@@ -11,6 +11,9 @@ interface GameState {
   players: Players;
   move: (from: string, to: string) => boolean;
   tickTime: () => void;
+  reset: () => void;
+  timeOutSide: "w" | "b" | null;
+  setTimeOutSide: (side: "w" | "b" | null) => void;
 }
 
 export const useGameStore = create<GameState>((set, get) => {
@@ -19,16 +22,18 @@ export const useGameStore = create<GameState>((set, get) => {
     chess,
     fen: chess.fen(),
     turn: chess.turn(),
+    timeOutSide: null,
+    setTimeOutSide: (side) => set({ timeOutSide: side }),
     players: {
       white: {
-        name: "Furkan",
+        name: "White Player",
         score: 0,
         isWhite: true,
         timeLeft: 60,
         moves: [],
       },
       black: {
-        name: "Alperen",
+        name: "Black Player",
         score: 0,
         isWhite: false,
         timeLeft: 60,
@@ -39,6 +44,7 @@ export const useGameStore = create<GameState>((set, get) => {
     move: (from, to) => {
       const chess = get().chess;
       const move = chess.move({ from, to, promotion: "q" });
+
       if (!move) return false;
 
       let players = { ...get().players };
@@ -57,29 +63,64 @@ export const useGameStore = create<GameState>((set, get) => {
     },
 
     tickTime: () => {
+      if (chess.isGameOver()) return;
+
       const turn = get().turn;
 
       if (turn === "w") {
+        const newTime = Math.max(get().players.white.timeLeft - 1, 0);
         set((state) => ({
           players: {
             ...state.players,
             white: {
               ...state.players.white,
-              timeLeft: Math.max(state.players.white.timeLeft - 1, 0),
+              timeLeft: newTime,
             },
           },
         }));
+        if (newTime === 0) {
+          set({ timeOutSide: "w" });
+        }
       } else {
+        const newTime = Math.max(get().players.black.timeLeft - 1, 0);
         set((state) => ({
           players: {
             ...state.players,
             black: {
               ...state.players.black,
-              timeLeft: Math.max(state.players.black.timeLeft - 1, 0),
+              timeLeft: newTime,
             },
           },
         }));
+        if (newTime === 0) {
+          set({ timeOutSide: "b" });
+        }
       }
     },
+
+    reset: () =>
+      set(() => {
+        chess.reset();
+        return {
+          turn: "w",
+          players: {
+            white: {
+              name: "White Player",
+              score: 0,
+              isWhite: true,
+              timeLeft: 60,
+              moves: [],
+            },
+            black: {
+              name: "Black Player",
+              score: 0,
+              isWhite: false,
+              timeLeft: 60,
+              moves: [],
+            },
+          },
+          timeOutSide: null,
+        };
+      }),
   };
 });

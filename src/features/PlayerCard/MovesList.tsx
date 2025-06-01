@@ -17,12 +17,33 @@ const MovesContainer = styled.div`
   text-align: left;
   overflow-y: scroll;
   padding: 8px;
-  border: 1px solid #ddd;
   border-radius: 4px;
-  background-color: #fafafa;
-  margin-bottom: 1rem;
-  max-height: 49rem;
+  background-color: #05041d;
+  max-height: 45rem;
   padding-right: 16px;
+
+  /* Scrollbar stilleri (Webkit) */
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #e0e0fb; /* scroll bar arkası */
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #d7d9e2; /* scroll bar kendisi */
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #6b73a9; /* hover olunca */
+  }
+
+  /* Firefox (scrollbar-color ve scrollbar-width) */
+  scrollbar-width: thin;
+  scrollbar-color: #05041d #05041d;
 `;
 
 const MovesListStyled = styled.ol`
@@ -37,7 +58,9 @@ interface MoveItemProps {
   highlight?: boolean;
 }
 
-const MoveItem = styled.div<MoveItemProps>`
+const MoveItem = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "highlight",
+})<MoveItemProps>`
   background: #080850; /* koyu mavi/menekşe */
   color: #f0f0f5; /* açık renk */
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;

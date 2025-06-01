@@ -9,7 +9,7 @@ const TimerWrapper = styled.div`
 const TimeText = styled.div`
   font-size: 1.9rem;
   font-weight: 600;
-  color: #276749;
+  color: #0fde7e;
   margin-bottom: 18px;
   user-select: none;
 `;
@@ -24,12 +24,12 @@ const ProgressBarBackground = styled.div`
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 `;
 
-const ProgressBarFiller = styled.div<{ progress: number }>`
+const ProgressBarFiller = styled.div<{ $progress: number }>`
   height: 100%;
-  background: #48bb78;
+  background: #37d177;
   border-radius: 6px 0 0 6px;
   transition: width 0.4s ease;
-  width: ${({ progress }) => progress}%;
+  width: ${({ $progress }) => $progress}%;
 `;
 
 interface Props {
@@ -44,7 +44,7 @@ const Timer = ({ timeLeft, totalTime }: Props) => {
     <TimerWrapper>
       <TimeText>{timeLeft}s</TimeText>
       <ProgressBarBackground>
-        <ProgressBarFiller progress={progressPercent} />
+        <ProgressBarFiller $progress={progressPercent} />
       </ProgressBarBackground>
     </TimerWrapper>
   );
