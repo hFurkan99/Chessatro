@@ -6,7 +6,8 @@ import { useEffect } from "react";
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
   align-items: center;
   justify-content: center;
   height: 100vh;
