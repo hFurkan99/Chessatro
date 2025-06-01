@@ -59,6 +59,8 @@ const GameOverModal = () => {
   const timeOutSide = useGameStore((state) => state.timeOutSide);
   const players = useGameStore((state) => state.players);
 
+  const setGameOver = useGameStore((state) => state.setGameOver);
+
   const isGameOver = chess.isGameOver() || timeOutSide !== null;
 
   if (!isGameOver) return null;
@@ -68,7 +70,7 @@ const GameOverModal = () => {
       <Modal>
         <Title>Game Over</Title>
         <Description>
-          {getGameOverMessage(chess, timeOutSide, players)}
+          {getGameOverMessage(chess, timeOutSide, players, setGameOver)}
         </Description>
         <Button onClick={reset}>Restart Game</Button>
       </Modal>

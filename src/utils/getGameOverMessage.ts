@@ -5,8 +5,11 @@ import type { Players } from "../types/Players";
 export const getGameOverMessage = (
   chess: Chess,
   timeOutSide: "w" | "b" | null,
-  players: Players
+  players: Players,
+  setGameOver: (value: boolean) => void
 ): string => {
+  setGameOver(true);
+
   if (timeOutSide) {
     const winnerSide = timeOutSide === "w" ? "b" : "w";
 

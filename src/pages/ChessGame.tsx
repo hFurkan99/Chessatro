@@ -21,13 +21,16 @@ const Center = styled.div`
 const ChessGame = () => {
   const tickTime = useGameStore((state) => state.tickTime);
   const players = useGameStore((state) => state.players);
+  const gameover = useGameStore((state) => state.gameOver);
 
   useEffect(() => {
+    if (gameover) return;
+
     const interval = setInterval(() => {
       tickTime();
     }, 1000);
     return () => clearInterval(interval);
-  }, [tickTime]);
+  }, [tickTime, gameover]);
 
   return (
     <Container>

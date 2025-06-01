@@ -9,11 +9,13 @@ interface GameState {
   fen: string;
   turn: "w" | "b";
   players: Players;
+  gameOver: boolean;
   move: (from: string, to: string) => boolean;
   tickTime: () => void;
   reset: () => void;
   timeOutSide: "w" | "b" | null;
   setTimeOutSide: (side: "w" | "b" | null) => void;
+  setGameOver: (value: boolean) => void;
 }
 
 export const useGameStore = create<GameState>((set, get) => {
@@ -23,6 +25,8 @@ export const useGameStore = create<GameState>((set, get) => {
     fen: chess.fen(),
     turn: chess.turn(),
     timeOutSide: null,
+    gameOver: false,
+    setGameOver: (value: boolean) => set({ gameOver: value }),
     setTimeOutSide: (side) => set({ timeOutSide: side }),
     players: {
       white: {
@@ -63,8 +67,6 @@ export const useGameStore = create<GameState>((set, get) => {
     },
 
     tickTime: () => {
-      if (chess.isGameOver()) return;
-
       const turn = get().turn;
 
       if (turn === "w") {
@@ -100,9 +102,12 @@ export const useGameStore = create<GameState>((set, get) => {
 
     reset: () =>
       set(() => {
-        chess.reset();
+        const chess = new Chess();
         return {
+          chess,
+          fen: chess.fen(),
           turn: "w",
+          gameOver: false,
           players: {
             white: {
               name: "White Player",
